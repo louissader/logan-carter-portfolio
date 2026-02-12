@@ -120,16 +120,24 @@ const Hero = () => {
                 ))}
               </div>
 
-              {/* Mobile scroll indicator - inline next to core tools */}
+            </motion.div>
+
+            {/* Mobile scroll indicator - centered below core tools */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              style={{ opacity: scrollOpacity }}
+              className="lg:hidden flex justify-center mt-8"
+            >
               <motion.a
                 href="#about"
                 animate={{ y: [0, 6, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                style={{ opacity: scrollOpacity }}
-                className="lg:hidden flex flex-col items-center text-dark-500 hover:text-primary-400 transition-colors ml-auto"
+                className="flex flex-col items-center text-dark-500 hover:text-primary-400 transition-colors"
               >
-                <span className="text-xs mb-1">Scroll</span>
-                <ChevronDown size={16} />
+                <span className="text-base font-semibold mb-1">Scroll to explore</span>
+                <ChevronDown size={22} />
               </motion.a>
             </motion.div>
           </motion.div>
@@ -230,8 +238,8 @@ const Hero = () => {
           transition={{ duration: 2, repeat: Infinity }}
           className="flex flex-col items-center text-dark-500 hover:text-primary-400 transition-colors"
         >
-          <span className="text-sm mb-2">Scroll to explore</span>
-          <ChevronDown size={20} />
+          <span className="text-base font-semibold mb-2">Scroll to explore</span>
+          <ChevronDown size={24} />
         </motion.a>
       </motion.div>
     </section>
