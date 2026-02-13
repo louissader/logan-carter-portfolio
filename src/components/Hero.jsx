@@ -1,5 +1,23 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown, Cog, PenTool, Ruler, Wrench, Linkedin } from 'lucide-react'
+import { useState } from 'react'
+
+const ImageWithLoader = ({ src, alt, className }) => {
+  const [loaded, setLoaded] = useState(false)
+  return (
+    <div className="relative">
+      {!loaded && (
+        <div className={`${className} bg-dark-800 animate-pulse`} />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setLoaded(true)}
+      />
+    </div>
+  )
+}
 
 const Hero = () => {
   const { scrollY } = useScroll()
@@ -27,11 +45,32 @@ const Hero = () => {
               <span className="text-sm text-primary-400 font-medium">Seeking Engineering Internships</span>
             </motion.div>
 
+            {/* Mobile inline profile pic + name */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex items-center gap-4 mb-6 lg:hidden"
+            >
+              <div className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden ring-2 ring-primary-500/50">
+                <img
+                  src="/images/profile/logan.jpg"
+                  alt="Logan Carter"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold leading-tight">
+                Hi, I'm{' '}
+                <span className="gradient-text">Logan Carter</span>
+              </h1>
+            </motion.div>
+
+            {/* Desktop name only */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+              className="hidden lg:block text-6xl font-bold mb-6 leading-tight"
             >
               Hi, I'm{' '}
               <span className="gradient-text">Logan Carter</span>
@@ -46,35 +85,16 @@ const Hero = () => {
               Mechanical Engineering Student
             </motion.h2>
 
-            <motion.div
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="flex gap-4 mb-8 items-start"
+              className="text-dark-400 text-lg mb-8 max-w-xl leading-relaxed"
             >
-              <p className="text-dark-400 text-lg max-w-xl leading-relaxed flex-1">
-                Dedicated and innovative engineering student at the University of Colorado Boulder.
-                Extensive experience in SolidWorks, MATLAB, and mechanical design with a passion for
-                analytical precision and creative problem solving.
-              </p>
-              <div className="relative shrink-0 lg:hidden w-28 sm:w-36">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-orange-500/20 rounded-2xl blur-xl" />
-                <div className="relative glass rounded-2xl overflow-hidden p-1.5">
-                  <img
-                    src="/images/profile/logan.jpg"
-                    alt="Logan Carter - Mechanical Engineering Student"
-                    className="w-full h-auto rounded-xl object-cover"
-                  />
-                </div>
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute -top-2 -right-2 px-2 py-1 glass rounded-lg"
-                >
-                  <span className="text-primary-400 font-mono text-[10px]">3.6 GPA</span>
-                </motion.div>
-              </div>
-            </motion.div>
+              Dedicated and innovative engineering student at the University of Colorado Boulder.
+              Extensive experience in SolidWorks, MATLAB, and mechanical design with a passion for
+              analytical precision and creative problem solving.
+            </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -91,13 +111,14 @@ const Hero = () => {
               </a>
             </motion.div>
 
+            {/* Tech Stack Icons - hidden on mobile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="flex items-center gap-3 sm:gap-6 mt-8 sm:mt-12"
+              className="hidden lg:flex items-center gap-6 mt-12"
             >
-              <span className="text-dark-500 text-sm hidden sm:inline">Core Tools:</span>
+              <span className="text-dark-500 text-sm">Core Tools:</span>
               <div className="flex items-center gap-3 sm:gap-4">
                 {[
                   { icon: PenTool, label: 'SolidWorks' },
@@ -119,10 +140,9 @@ const Hero = () => {
                   </motion.div>
                 ))}
               </div>
-
             </motion.div>
 
-            {/* Mobile scroll indicator - centered below core tools */}
+            {/* Mobile scroll indicator */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -136,7 +156,7 @@ const Hero = () => {
                 transition={{ duration: 2, repeat: Infinity }}
                 className="flex flex-col items-center text-dark-500 hover:text-primary-400 transition-colors"
               >
-                <span className="text-base font-semibold mb-1">Scroll to explore</span>
+                <span className="text-base font-bold mb-1">Scroll to explore</span>
                 <ChevronDown size={22} />
               </motion.a>
             </motion.div>
@@ -153,7 +173,7 @@ const Hero = () => {
               <div className="relative w-[60%] mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-orange-500/20 rounded-2xl blur-xl" />
                 <div className="relative glass rounded-2xl overflow-hidden p-2">
-                  <img
+                  <ImageWithLoader
                     src="/images/profile/logan.jpg"
                     alt="Logan Carter - Mechanical Engineering Student"
                     className="w-full h-auto rounded-xl object-cover"
@@ -222,9 +242,9 @@ const Hero = () => {
             </div>
           </motion.div>
         </div>
-
       </div>
 
+      {/* Desktop scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -238,7 +258,7 @@ const Hero = () => {
           transition={{ duration: 2, repeat: Infinity }}
           className="flex flex-col items-center text-dark-500 hover:text-primary-400 transition-colors"
         >
-          <span className="text-base font-semibold mb-2">Scroll to explore</span>
+          <span className="text-base font-bold mb-2">Scroll to explore</span>
           <ChevronDown size={24} />
         </motion.a>
       </motion.div>
